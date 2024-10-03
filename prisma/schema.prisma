@@ -9,3 +9,52 @@ datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
+
+// 後臺管理 User
+model User {
+  id String @id @default(uuid())
+  email String
+  password String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// 前台系統 Player
+model Player {
+  id String @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// 資金操作記錄
+model FundOperationLog {
+  id String @id @default(uuid())
+  playerId String
+  changeAmount Decimal // 操作的金額
+  beforeAmount Decimal // 操作前的餘額
+  afterAmount Decimal // 操作後的餘額
+  type Int // 0: 入金, 1: 出金, 2: 下注, 3: 反水, 4: 优惠, 5: 首充, 6: 资金扣除, 7: 下注取消, 8: 下注结算, 9: 赠送
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// 目前遊戲
+model CurrentRound {
+  id String @id @default(uuid())
+  period String // 期數
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// 遊戲紀錄
+model RoundRecord {
+  id String @id @default(uuid())
+  period String // 期數
+  drawTime DateTime @default(now()) // 開獎時間
+  one String // 第一個號碼
+  two String // 第二個號碼
+  three String // 第三個號碼
+  status Int // 0 未開獎 1 已開獎
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
